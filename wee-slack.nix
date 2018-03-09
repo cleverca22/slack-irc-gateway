@@ -15,7 +15,7 @@ in stdenv.mkDerivation {
     rev = "221dfc528d7df5460b5d0014d28a6dd6f733ca7b";
     sha256 = "0712zzscgylprnnpgy2vr35a5mdqhic8kag5v3skhd84awbvk1n5";
   };
-  patches = [ ./wee_slack.patch ./libpath.patch ];
+  patches = [ ./wee_slack.patch ./libpath.patch ./stringio.patch ];
   NIX_OUTPUT = "${env}/lib/python2.7/site-packages";
   installPhase = ''
     mkdir $out
