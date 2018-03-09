@@ -1,0 +1,60 @@
+--- src/wee_slack.py	1969-12-31 20:00:01.000000000 -0400
++++ wee_slack.py	2018-03-08 19:15:26.013523762 -0400
+@@ -3023,48 +3023,29 @@
+ 
+ 
+ def command_register(data, current_buffer, args):
+-    CLIENT_ID = "2468770254.51917335286"
+-    CLIENT_SECRET = "dcb7fe380a000cba0cca3169a5fe8d70"  # Not really a secret.
+     if args == 'register':
+         message = textwrap.dedent("""
+-            #### Retrieving a Slack token via OAUTH ####
++            #### How to get token (the easy way) - thanks to https://github.com/yuya373/emacs-slack#how-to-get-token-the-easy-way
++
++            1) Log into the Slack team you're interested in with a web browser
++            2) Open DevTools
++            3) Open Network tab
++            4) Search for (Ctrl-F) "xoxs-" and copy token from Query String Parameters
+ 
+-            1) Paste this into a browser: https://slack.com/oauth/authorize?client_id=2468770254.51917335286&scope=client
+-            2) Select the team you wish to access from wee-slack in your browser.
+-            3) Click "Authorize" in the browser **IMPORTANT: the redirect will fail, this is expected**
+-            4) Copy the "code" portion of the URL to your clipboard
+-            5) Return to weechat and run `/slack register [code]`
+         """)
+         w.prnt("", message)
+         return
+ 
+     try:
+-        _, oauth_code = args.split()
++        _, tok = args.split()
+     except ValueError:
+         w.prnt("",
+                "ERROR: wrong number of arguments given for register command")
+         return
+ 
+-    uri = (
+-        "https://slack.com/api/oauth.access?"
+-        "client_id={}&client_secret={}&code={}"
+-    ).format(CLIENT_ID, CLIENT_SECRET, oauth_code)
+-    ret = urllib.urlopen(uri).read()
+-    d = json.loads(ret)
+-    if not d["ok"]:
+-        w.prnt("",
+-            "ERROR: Couldn't get Slack OAuth token: {}".format(d['error']))
+-        return
+-
+-    if config.is_default('slack_api_token'):
+-        w.config_set_plugin('slack_api_token', d['access_token'])
+-    else:
+-        # Add new token to existing set, joined by comma.
+-        tok = config.get_string('slack_api_token')
+-        w.config_set_plugin('slack_api_token',
+-                            ','.join([tok, d['access_token']]))
++    w.config_set_plugin('slack_api_token', tok)
+ 
+-    w.prnt("", "Success! Added team \"%s\"" % (d['team_name'],))
++    w.prnt("", "Success!")
+     w.prnt("", "Please reload wee-slack with: /script reload slack")
+ 
+ 

@@ -1,0 +1,11 @@
+--- result/wee_slack.py	1969-12-31 20:00:01.000000000 -0400
++++ wee_slack.py	2018-03-08 19:48:48.368483599 -0400
+@@ -21,6 +21,8 @@
+ import random
+ import string
+ 
++sys.path.append('@NIX_OUTPUT@')
++
+ from websocket import create_connection, WebSocketConnectionClosedException
+ 
+ # hack to make tests possible.. better way?
