@@ -9,3 +9,5 @@ https://github.com/42wim/matterircd
 https://github.com/yuya373/emacs-slack
 
 https://github.com/wee-slack/wee-slack
+
+https://github.com/tedski/slack-irssi
